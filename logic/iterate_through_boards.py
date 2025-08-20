@@ -19,6 +19,6 @@ for i in range(1700000000000, 1800000000000):
         time.sleep(delay)
         delay = delay / 1.5
     else:
-        time.sleep(0.01)
+        time.sleep(0.1)
 
-    os.system('clear')
+    os.system('cls')
