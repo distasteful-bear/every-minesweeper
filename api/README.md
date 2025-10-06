@@ -28,6 +28,6 @@ https://gobyexample.com/
 Also here is some basic GO documentation:
 https://go.dev/doc/tutorial/getting-started
 
-## Learning the Gin Framework
-Here are the docs for the Gin framework, it is pretty slim
+## Learning the Gin API Framework
+Here are the docs for the Gin Web API framework, it is pretty slim
 https://gin-gonic.com/en/docs/

@@ -1,6 +1,5 @@
-
-# This first part seems to work but only for numbers that 
-# are 2^n so we would need to trash 
+# This first part seems to work but only for numbers that
+# are 2^n so we would need to trash
 # some generated values or something to get it to work
 
 # def feistel_round(x, key, rounds=4, bits=16):
@@ -32,7 +31,10 @@
 
 
 import hashlib
-# This seems to work the only thing is generating a coprime but it seems to be very fast even with large ranges (also I pretty sure if just get a prime larger than any range it we could just plug in as a coprime and it would work like a seed)
+
+
+# This seems to work the only thing is generating a coprime but it seems to be very fast even with large ranges
+# (also I pretty sure if just get a prime larger than any range it we could just plug in as a coprime and it would work like a seed)
 def bijective_permutation(k, n, seed="default_seed"):
     """
     Bijective permutation function that maps integers from 1 to n to unique integers in the same range.
@@ -62,6 +64,7 @@ def bijective_permutation(k, n, seed="default_seed"):
     multiplier = coprime_multiplier(n, seed)
     return (k * multiplier) % n + 1  # Map to 1..n
 
+
 # Demonstrate the function for n = 100
 n = 20
 seed = "example_seed"
@@ -70,4 +73,3 @@ results = [bijective_permutation(k, n, seed) for k in range(1, 21)]
 # Print the first 20 mappings
 for k, v in zip(range(1, 21), results):
     print(f"{k} → {v}")
-
