@@ -6,12 +6,21 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func handlePing(c *gin.Context) {
 	response := make(map[string]string)
 	response["data"] = "Successful Ping!"
 	c.JSON(200, response)
+}
+
+// init is invoked before main()
+func initEnv() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf(".env file not found")
+	}
 }
 
 func handleDBHealth(c *gin.Context, db *sql.DB) {
@@ -29,6 +38,8 @@ func handleDBHealth(c *gin.Context, db *sql.DB) {
 }
 
 func main() {
+
+	initEnv() // will throw on failure
 
 	db, err := utils.ConnectToDBWithConnector()
 	if err != nil {

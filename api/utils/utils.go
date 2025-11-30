@@ -15,8 +15,8 @@ import (
 
 func ConnectToDBWithConnector() (*sql.DB, error) {
 	mustGetenv := func(k string) string {
-		v := os.Getenv(k)
-		if v == "" {
+		v, ok := os.LookupEnv(k)
+		if !ok {
 			log.Fatalf("Fatal Error in connect_connector.go: %s environment variable not set.\n", k)
 		}
 		return v
@@ -30,7 +30,6 @@ func ConnectToDBWithConnector() (*sql.DB, error) {
 		dbPwd                  = mustGetenv("DB_PASS")                  // e.g. 'my-db-password'
 		dbName                 = mustGetenv("DB_NAME")                  // e.g. 'my-database'
 		instanceConnectionName = mustGetenv("INSTANCE_CONNECTION_NAME") // e.g. 'project:region:instance'
-		usePrivate             = os.Getenv("PRIVATE_IP")
 	)
 
 	dsn := fmt.Sprintf("user=%s password=%s database=%s", dbUser, dbPwd, dbName)
@@ -39,9 +38,7 @@ func ConnectToDBWithConnector() (*sql.DB, error) {
 		return nil, err
 	}
 	var opts []cloudsqlconn.Option
-	if usePrivate != "" {
-		opts = append(opts, cloudsqlconn.WithDefaultDialOptions(cloudsqlconn.WithPrivateIP()))
-	}
+
 	// WithLazyRefresh() Option is used to perform refresh
 	// when needed, rather than on a scheduled interval.
 	// This is recommended for serverless environments to
