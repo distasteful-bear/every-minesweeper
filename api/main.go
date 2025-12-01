@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"every-minesweeper/utils"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -17,9 +18,11 @@ func handlePing(c *gin.Context) {
 
 // init is invoked before main()
 func initEnv() {
-	// loads values from .env into the system
+	// loads values from .env into the system if present
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf(".env file not found")
+		// In containerized environments (Cloud Run) environment variables
+		// are typically provided by the platform. Don't fatal here.
+		log.Println(".env file not found; continuing with environment variables")
 	}
 }
 
@@ -54,5 +57,10 @@ func main() {
 		handleDBHealth(c, db)
 	})
 
-	router.Run("localhost:8080")
+	// Use PORT environment variable for compatibility with Cloud Run
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	router.Run(":" + port)
 }
